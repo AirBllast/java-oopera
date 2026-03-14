@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Theatre {
@@ -12,6 +13,10 @@ public class Theatre {
         Director kuznecovaAnna = new Director("Анна", "Кузнецова", Gender.FEMALE, 3);
         Person romanovAlexMusicAuthor = new Person("Алексей", "Романов", Gender.MALE);
         Person savickayaElenaChoreographer = new Person("Елена", "Савицкая", Gender.FEMALE);
+        ArrayList<Actor> troupe = new ArrayList<>();
+        troupe.add(petrovIvan);
+        troupe.add(orlovaMariya);
+        troupe.add(pakAndrey);
         Show shadows = new Show("Тени", 75, volkovSergey);
         shadows.addActor(petrovIvan);
         shadows.addActor(orlovaMariya);
@@ -34,13 +39,13 @@ public class Theatre {
             int choice = scanner.nextInt();
             switch (choice) {
                 case 1:
-                    showMenu(shadows, scanner);
+                    showMenu(shadows, scanner, troupe);
                     break;
                 case 2:
-                    showMenu(voice, scanner);
+                    showMenu(voice, scanner, troupe);
                     break;
                 case 3:
-                    showMenu(aurora, scanner);
+                    showMenu(aurora, scanner, troupe);
                     break;
                 case 4:
                     return;
@@ -52,7 +57,7 @@ public class Theatre {
     }
 
 
-    static void showMenu(Show show, Scanner scanner) {
+    static void showMenu(Show show, Scanner scanner, ArrayList<Actor> troupe) {
         System.out.println("1. Узнать режиссера");
         System.out.println("2. Список актеров");
         System.out.println("3. Либретто");
@@ -76,27 +81,28 @@ public class Theatre {
                 if (show.listOfActors.isEmpty()) {
                     System.out.println("В шоу пока нет актеров для замены.");
                 } else {
-                    System.out.println("Выберите номер актера, которого хотите заменить:");
+                    System.out.println("Выберите номер актера, которого хотите добавить:");
 
-                    for (int i = 0; i < show.listOfActors.size(); i++) {
-                        System.out.println((i + 1) + ". " + show.listOfActors.get(i));
+                    for (int i = 0; i < troupe.size(); i++) {
+                        System.out.println((i + 1) + ". " + troupe.get(i));
                     }
 
                     int actorIndex = scanner.nextInt() - 1;
 
-                    if (actorIndex >= 0 && actorIndex < show.listOfActors.size()) {
-                        Actor oldActor = show.listOfActors.get(actorIndex);
-                        System.out.println("Введите данные нового актера:");
-                        Actor newActor = createActor(scanner);
-
-                        show.changeActor(oldActor, newActor);
+                    if (actorIndex >= 0 && actorIndex < troupe.size()) {
+                        Actor actor = troupe.get(actorIndex);
+                        System.out.println("Сейчас в спектакле участвуют следующие актеры: ");
+                        show.printListOfActors();
+                        System.out.println("Введите фамилию актера которого нужно заменить:");
+                        String actorSurname = scanner.next();
+                        show.changeActor(actor, actorSurname);
                     } else {
                         System.out.println("Неверный номер актера.");
                     }
                 }
                 break;
             default:
-                System.out.println("Такой команды нет");
+                System.out.println("Такой команды нет.");
                 break;
         }
 

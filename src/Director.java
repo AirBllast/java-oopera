@@ -10,6 +10,6 @@ public class Director extends Person {
     @Override
     public String toString() {
 
-        return "Режиссер " + super.toString();
+        return "Режиссер " + super.toString() + " всего шоу " +numberOfShows;
     }
 }

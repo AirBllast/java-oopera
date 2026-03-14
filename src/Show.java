@@ -1,10 +1,10 @@
 import java.util.ArrayList;
 
 public class Show {
-    public String title;
-    public int duration;
-    public Director director;
-    public ArrayList<Actor> listOfActors = new ArrayList<>();
+    protected String title;
+    protected int duration;
+    protected Director director;
+    protected ArrayList<Actor> listOfActors = new ArrayList<>();
 
 
     public Show(String title, int duration, Director director) {
@@ -20,7 +20,7 @@ public class Show {
 
     public void printListOfActors() {
         if (this.listOfActors.isEmpty()) {
-            System.out.println("У этого шоу еще нет актеров");
+            System.out.println("У этого шоу еще нет актеров.");
         } else {
             for (Actor actor : listOfActors) {
                 System.out.println(actor);
@@ -30,37 +30,38 @@ public class Show {
 
     public void addActor(Actor actor) {
         if (listOfActors.contains(actor)) {
-            System.out.println("Этот актер уже участвует в шоу");
+            System.out.println("Этот актер уже участвует в шоу.");
             return;
         }
         listOfActors.add(actor);
         System.out.println("Актер успешно добавлен.");
     }
 
-    public void changeActor(Actor oldActor, Actor newActor) {
-        int index = listOfActors.indexOf(oldActor);
-
-        if (index == -1) {
-            System.out.println("Актер " + oldActor.getName() + " не найден в этом шоу");
+    public void changeActor(Actor actor, String previousActorSurname) {
+        if (listOfActors.contains(actor)) {
+            System.out.println("Актер " + actor.getSurname() + " уже и так участвует в этом шоу.");
             return;
         }
 
-        if (newActor.getName().equals(oldActor.getName())) {
-            System.out.println("Тот же актер!");
-            return;
-        }
+        boolean found = false;
+        for (int i = 0; i < listOfActors.size(); i++) {
+            Actor currentActor = listOfActors.get(i);
 
-        if (listOfActors.contains(newActor)) {
-            System.out.println("Этот актер уже участвует в шоу");
-            return;
+            if (currentActor.getSurname().equals(previousActorSurname)) {
+                String oldSurname = currentActor.getSurname();
+                listOfActors.set(i, actor);
+                System.out.println("Актер " + actor.getSurname() + " теперь исполняет роль " + oldSurname + ".");
+                found = true;
+                break;
+            }
         }
-
-        listOfActors.set(index, newActor);
-        System.out.println("Актер " + newActor.getSurname() + ' ' + newActor.getName() + " теперь исполняет роль " +
-                oldActor.getSurname() + ' ' + oldActor.getName());
+        if (!found) {
+            System.out.println("Актера с фамилией " + previousActorSurname + " нет в этом шоу.");
+        }
     }
 
     public void printlibrettoText() {
+
         System.out.println("У этого шоу нет либретто.");
     }
 }
